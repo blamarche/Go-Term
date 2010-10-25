@@ -10,7 +10,12 @@ To get information about the system calls, run `man termios`.
 ## Installation
 
 	$ git clone git://github.com/kless/go-term.git
-	$ cd go-term && ./Install.sh && cd -
+
+It should be checked that tests are passed to know if it works with both system
+and terminal:
+
+	$ cd go-term/term && gotest && cd - &&
+	cd go-term && ./Install.sh && cd -
 
 
 ## Configuration
