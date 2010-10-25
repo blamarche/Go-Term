@@ -20,11 +20,11 @@ import (
 )
 
 
-var IsRawMode = false // To check if restore is needed.
+var stdin = 0
 
 var (
+	IsRawMode       = false        // To check if restore is needed.
 	origTermios     = newTermios() // In order to restore the original settings.
-	stdin           = 0
 	unsupportedTerm = []string{"dumb", "cons25"}
 )
 
@@ -33,33 +33,10 @@ var (
 // ===
 
 func init() {
-	if err := CheckIsatty(stdin); err != nil {
-		panic("no tty: " + err.String())
-	}
-
-	if !isSupportedTerm() {
-		panic("terminal not supported")
-	}
-
 	// Store the actual terminal settings.
 	if err := tcgetattr(stdin, origTermios); err != nil {
 		panic("terminal settings could not be got: " + err.String())
 	}
-}
-
-// Checks if the terminal is supported by this library.
-func isSupportedTerm() bool {
-	term := os.Getenv("TERM")
-	if term == "" {
-		return false
-	}
-
-	for _, value := range unsupportedTerm {
-		if value == term {
-			return false
-		}
-	}
-	return true
 }
 
 
@@ -158,6 +135,21 @@ func Echo(echo bool) {
 	if err := tcsetattr(stdin, C.TCSANOW, origTermios); err != nil {
 		panic("echo mode")
 	}
+}
+
+// Checks if the terminal supports ANSI terminal escape controls.
+func HandleANSI() bool {
+	term := os.Getenv("TERM")
+	if term == "" {
+		return false
+	}
+
+	for _, value := range unsupportedTerm {
+		if value == term {
+			return false
+		}
+	}
+	return true
 }
 
 // Sets the terminal to single-character mode.

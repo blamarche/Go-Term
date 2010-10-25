@@ -37,7 +37,7 @@ func TestTTYname(t *testing.T) {
 }
 
 func TestTerminal(t *testing.T) {
-	if !isSupportedTerm() {
+	if !HandleANSI() {
 		t.Error("this terminal should be supported")
 	}
 }

@@ -57,6 +57,7 @@ var RowSize, ColumnSize int // To be used by TrapWinsize()
 // === Type
 // ===
 
+// Definition from "h-termios_linux.go".
 type winsize struct {
 	Row    uint16
 	Col    uint16
