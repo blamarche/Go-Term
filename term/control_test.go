@@ -23,9 +23,9 @@ func TestTTY(t *testing.T) {
 }
 
 func TestSettings(t *testing.T) {
-	term := newTermios()
+	term := newTermios(stdin)
 
-	if tcgetattr(stdin, term) != nil {
+	if term.tcgetattr() != nil {
 		t.Error("could not retrieve the terminal settings")
 	}
 }
@@ -33,12 +33,6 @@ func TestSettings(t *testing.T) {
 func TestTTYname(t *testing.T) {
 	if _, err := TTYname(stdin); err != nil {
 		t.Error("should get the terminal name", err)
-	}
-}
-
-func TestTerminal(t *testing.T) {
-	if !HandleANSI() {
-		t.Error("this terminal should be supported")
 	}
 }
 /*

@@ -15,6 +15,7 @@ CGOFILES=\
 	control.go\
 
 GOFILES=\
+	util.go\
 	winsize.go\
 
 include $(GOROOT)/src/Make.pkg

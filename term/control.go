@@ -20,21 +20,19 @@ import (
 )
 
 
+var IsRawMode bool       // To check if restore is needed.
+var origTermios *termios // In order to restore the original settings.
 var stdin = 0
-
-var (
-	IsRawMode       = false        // To check if restore is needed.
-	origTermios     = newTermios() // In order to restore the original settings.
-	unsupportedTerm = []string{"dumb", "cons25"}
-)
 
 
 // === Init
 // ===
 
 func init() {
-	// Store the actual terminal settings.
-	if err := tcgetattr(stdin, origTermios); err != nil {
+	// === Store the actual terminal settings.
+	origTermios = newTermios(stdin)
+
+	if err := origTermios.tcgetattr(); err != nil {
 		panic("terminal settings could not be got: " + err.String())
 	}
 }
@@ -46,15 +44,41 @@ func init() {
 // Allows to manipulate the terminal.
 type termios struct {
 	wrap *_Ctype_struct_termios
+	fd   int // File descriptor
+}
+
+
+func newTermios(fd int) *termios {
+	return &termios{new(_Ctype_struct_termios), fd}
 }
 
 // Deep copy for pointer fields.
-func (self *termios) copyto(to *termios) {
-	*to.wrap = *self.wrap
+func (tc *termios) copyto(to *termios) {
+	*to.wrap = *tc.wrap
 }
 
-func newTermios() *termios {
-	return &termios{new(_Ctype_struct_termios)}
+// Gets terminal state.
+//
+// int tcgetattr(int fd, struct termios *termios_p);
+func (tc *termios) tcgetattr() os.Error {
+	exitCode, errno := C.tcgetattr(C.int(tc.fd), tc.wrap)
+
+	if exitCode == 0 {
+		return nil
+	}
+	return errno
+}
+
+// Sets terminal state.
+//
+// int tcsetattr(int fd, int optional_actions, const struct termios *termios_p);
+func (tc *termios) tcsetattr(optional_actions int) os.Error {
+	exitCode, errno := C.tcsetattr(C.int(tc.fd), C.int(optional_actions), tc.wrap)
+
+	if exitCode == 0 {
+		return nil
+	}
+	return errno
 }
 
 
@@ -85,30 +109,6 @@ func CheckIsatty(fd int) os.Error {
 	return errno
 }
 
-// Gets terminal state.
-//
-// int tcgetattr(int fd, struct termios *termios_p);
-func tcgetattr(fd int, termios_p *termios) os.Error {
-	exitCode, errno := C.tcgetattr(C.int(fd), termios_p.wrap)
-
-	if exitCode == 0 {
-		return nil
-	}
-	return errno
-}
-
-// Sets terminal state.
-//
-// int tcsetattr(int fd, int optional_actions, const struct termios *termios_p);
-func tcsetattr(fd int, optional_actions int, termios_p *termios) os.Error {
-	exitCode, errno := C.tcsetattr(C.int(fd), C.int(optional_actions), termios_p.wrap)
-
-	if exitCode == 0 {
-		return nil
-	}
-	return errno
-}
-
 // Gets the name of a terminal.
 //
 // char *ttyname(int fd)
@@ -132,29 +132,14 @@ func Echo(echo bool) {
 		origTermios.wrap.c_lflag |= (C.ECHO)
 	}
 
-	if err := tcsetattr(stdin, C.TCSANOW, origTermios); err != nil {
+	if err := origTermios.tcsetattr(C.TCSANOW); err != nil {
 		panic("echo mode")
 	}
 }
 
-// Checks if the terminal supports ANSI terminal escape controls.
-func HandleANSI() bool {
-	term := os.Getenv("TERM")
-	if term == "" {
-		return false
-	}
-
-	for _, value := range unsupportedTerm {
-		if value == term {
-			return false
-		}
-	}
-	return true
-}
-
 // Sets the terminal to single-character mode.
 func KeyPress() {
-	newSettings := newTermios()
+	newSettings := newTermios(stdin)
 	origTermios.copyto(newSettings)
 
 	// Disable canonical mode, and set buffer size to 1 byte.
@@ -162,7 +147,7 @@ func KeyPress() {
 	newSettings.wrap.c_cc[C.VTIME] = 0
 	newSettings.wrap.c_cc[C.VMIN] = 1
 
-	if err := tcsetattr(stdin, C.TCSANOW, newSettings); err != nil {
+	if err := newSettings.tcsetattr(C.TCSANOW); err != nil {
 		panic("single-character mode")
 	}
 }
@@ -172,8 +157,12 @@ func KeyPress() {
 // terminal input and output characters is disabled.
 //
 // Based in C call: void cfmakeraw(struct termios *termios_p)
-func MakeRaw(fd int) os.Error {
-	raw := newTermios()
+func MakeRaw() os.Error {
+	if IsRawMode {
+		return nil
+	}
+
+	raw := newTermios(stdin)
 	origTermios.copyto(raw)
 	IsRawMode = true
 
@@ -199,7 +188,7 @@ func MakeRaw(fd int) os.Error {
 	raw.wrap.c_cc[C.VTIME] = 0
 
 	// Put terminal in raw mode after flushing
-	if err := tcsetattr(fd, C.TCSAFLUSH, raw); err != nil {
+	if err := raw.tcsetattr(C.TCSAFLUSH); err != nil {
 		return err
 	}
 
@@ -208,8 +197,10 @@ func MakeRaw(fd int) os.Error {
 
 // Recovers the original settings for this terminal.
 func RestoreTermios() {
-	if err := tcsetattr(stdin, C.TCSANOW, origTermios); err != nil {
-		panic("restoring the terminal")
+	if IsRawMode {
+		if err := origTermios.tcsetattr(C.TCSANOW); err != nil {
+			panic("restoring the terminal")
+		}
 	}
 }
 
