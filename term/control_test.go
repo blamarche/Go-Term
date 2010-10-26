@@ -10,9 +10,7 @@
 package term
 
 import (
-	//"fmt"
 	"testing"
-	//"time"
 )
 
 
@@ -35,29 +33,4 @@ func TestTTYname(t *testing.T) {
 		t.Error("should get the terminal name", err)
 	}
 }
-/*
-func TestUtility(t *testing.T) {
-	fmt.Println("\n == Terminal")
 
-	// === Read single key
-	KeyPress()
-	in := ReadKey("\n + Mode on single character: ")
-
-	fmt.Printf("\n  pressed: %s", string(in))
-	RestoreTermios()
-
-	// === Echo
-	fmt.Print("\n + Echo disabled. Try write\n  ")
-	Echo(false)
-	time.Sleep(5e9)
-
-	fmt.Print(" Echo enabled")
-	Echo(true)
-
-	// === Raw mode
-	fmt.Printf("\n + Raw mode\n  ")
-	MakeRaw(stdin)
-	time.Sleep(5e9)
-	RestoreTermios()
-}
-*/
