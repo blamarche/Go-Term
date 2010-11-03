@@ -43,13 +43,13 @@ func init() {
 
 // Allows to manipulate the terminal.
 type termios struct {
-	wrap *_Ctype_struct_termios
 	fd   int // File descriptor
+	wrap *_Ctype_struct_termios
 }
 
 
 func newTermios(fd int) *termios {
-	return &termios{new(_Ctype_struct_termios), fd}
+	return &termios{fd, new(_Ctype_struct_termios)}
 }
 
 // Deep copy for pointer fields.
@@ -195,12 +195,13 @@ func MakeRaw() os.Error {
 	return nil
 }
 
-// Recovers the original settings for this terminal.
-func RestoreTermios() {
+// Restores the original settings for this terminal.
+func RestoreTerm() {
 	if IsRawMode {
 		if err := origTermios.tcsetattr(C.TCSANOW); err != nil {
-			panic("restoring the terminal")
+			panic("restoring the terminal: " + err.String())
 		}
+		IsRawMode = false
 	}
 }
 
