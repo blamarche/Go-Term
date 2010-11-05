@@ -157,6 +157,8 @@ func KeyPress() {
 // terminal input and output characters is disabled.
 //
 // Based in C call: void cfmakeraw(struct termios *termios_p)
+//
+// NOTE: in tty 'raw mode', CR+LF is used for output and CR is used for input.
 func MakeRaw() os.Error {
 	if IsRawMode {
 		return nil
