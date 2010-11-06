@@ -10,6 +10,7 @@
 package term
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -18,5 +19,25 @@ func TestTerminal(t *testing.T) {
 	if !HandleANSI() {
 		t.Error("this terminal should be supported")
 	}
+}
+
+func TestReading(t *testing.T) {
+	fmt.Println("\n == Terminal")
+
+	// === Read single key
+	KeyPress()
+	rune, _ := ReadKey("\n + Mode on single character: ")
+
+	fmt.Printf("\n  pressed: %q", string(rune))
+	RestoreTerm()
+
+	// === Echo
+	Echo(false)
+	fmt.Print("\n + Echo disabled. Write and press Enter: ")
+	line, _ := ReadString("")
+
+	fmt.Printf("\n  pressed: %q\n", line)
+	fmt.Println(" + Echo enabled")
+	Echo(true)
 }
 
