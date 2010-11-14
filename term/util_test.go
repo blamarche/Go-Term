@@ -41,3 +41,16 @@ func TestReading(t *testing.T) {
 	Echo(true)
 }
 
+func TestReadSequence(t *testing.T) {
+	fmt.Println("\n == Read sequence")
+	fmt.Println(" Press Enter to exit\n")
+
+	for {
+		line, _ := ReadString(" + enter: ")
+		if line == "" {
+			break
+		}
+		fmt.Printf("   code: %q\n\n", line)
+	}
+}
+
