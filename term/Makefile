@@ -15,6 +15,7 @@ CGOFILES=\
 	control.go\
 
 GOFILES=\
+	error.go\
 	util.go\
 	winsize.go\
 
