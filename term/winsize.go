@@ -51,7 +51,7 @@ const (
 	_COLUMN = 80
 )
 
-var RowSize, ColumnSize int // To be used by TrapWinsize()
+var WinsizeChan = make(chan int) // Allocate a channel for TrapWinsize()
 
 
 // === Type
@@ -129,7 +129,7 @@ func TrapWinsize() {
 		case sig := <-signal.Incoming:
 			switch sig.(signal.UnixSignal) {
 			case syscall.SIGWINCH:
-				RowSize, ColumnSize = GetWinsizeInChar()
+				WinsizeChan <- 1 // Send a signal
 			}
 		}
 	}
