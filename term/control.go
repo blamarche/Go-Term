@@ -106,7 +106,7 @@ func CheckIsatty(fd int) os.Error {
 	if exitCode == 1 {
 		return nil
 	}
-	return TTYerror(errno.String())
+	return os.NewError("it is not a tty: " + errno.String())
 }
 
 // Gets the name of a terminal.
