@@ -127,7 +127,7 @@ func TrapWinsize() {
 	for {
 		select {
 		case sig := <-signal.Incoming:
-			switch sig.(signal.UnixSignal) {
+			switch sig.(os.UnixSignal) {
 			case syscall.SIGWINCH:
 				WinsizeChan <- 1 // Send a signal
 			}
