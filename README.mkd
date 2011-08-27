@@ -33,7 +33,7 @@ Nothing.
 ***Copyright 2010  The "go-term" Authors***  
 See file AUTHORS and CONTRIBUTORS (if any).
 
-Licensed under **Simplified BSD License**.  
+Licensed under **BSD-2 Clause license**.  
 See file LICENSE.
 
 
