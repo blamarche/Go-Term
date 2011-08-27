@@ -9,9 +9,7 @@
 
 package term
 
-import (
-	"testing"
-)
+import "testing"
 
 
 func TestTTY(t *testing.T) {

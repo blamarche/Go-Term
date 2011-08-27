@@ -15,9 +15,7 @@ package term
 // #include <unistd.h>
 import "C"
 
-import (
-	"os"
-)
+import "os"
 
 
 var IsRawMode bool       // To check if restore is needed.
