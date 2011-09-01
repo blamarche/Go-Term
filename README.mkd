@@ -1,20 +1,23 @@
 go-term
 =======
 
-**go-term** wraps Linux system calls to get information and control about the
+**go-term** wraps system calls to get information and control about the
 Unix terminal. It has been added some utilities about those system calls.
 
 To get information about the system calls, run `man termios`.
 
+Note that it is ready to working with systems Linux and Darwin. If you are using
+another Unix system with Go then contact me to add the defines for your system.
+
 
 ## Installation
 
-	git clone git://github.com/kless/go-term.git
-	cd go-term && ./Install.sh && cd -
+	goinstall github.com/kless/go-term/term
 
 It should be checked that tests are passed to know if it works with both system
 and terminal:
 
+	git clone git://github.com/kless/go-term.git
 	cd go-term/term && gotest && cd -
 
 
