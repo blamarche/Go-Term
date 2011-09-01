@@ -9,21 +9,14 @@
 
 package term
 
-import "os"
+const (
+	_TIOCGWINSZ = 0x5413
+	_TIOCSWINSZ = 0x5414
+)
 
-var unsupportedTerm = []string{"dumb", "cons25"}
-
-// Checks if the terminal supports ANSI terminal escape controls.
-func HandleANSI() bool {
-	term := os.Getenv("TERM")
-	if term == "" {
-		return false
-	}
-
-	for _, value := range unsupportedTerm {
-		if value == term {
-			return false
-		}
-	}
-	return true
+type winsize struct {
+	Row    uint16
+	Col    uint16
+	Xpixel uint16
+	Ypixel uint16
 }

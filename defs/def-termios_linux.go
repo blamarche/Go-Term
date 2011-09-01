@@ -1,5 +1,6 @@
-// goheader -w -s linux -p term /usr/include/asm-generic/termios.h
-// MACHINE GENERATED.
+// goheader -w -p term -s linux /usr/include/asm-generic/termios.h
+// MACHINE GENERATED; DO NOT EDIT
+// ===
 
 package term
 

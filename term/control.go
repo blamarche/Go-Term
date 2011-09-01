@@ -17,11 +17,9 @@ import "C"
 
 import "os"
 
-
 var IsRawMode bool       // To check if restore is needed.
 var origTermios *termios // In order to restore the original settings.
 var stdin = 0
-
 
 // === Init
 // ===
@@ -35,7 +33,6 @@ func init() {
 	}
 }
 
-
 // === Wrappers around types.
 // ===
 
@@ -44,7 +41,6 @@ type termios struct {
 	fd   int // File descriptor
 	wrap *_Ctype_struct_termios
 }
-
 
 func newTermios(fd int) *termios {
 	return &termios{fd, new(_Ctype_struct_termios)}
@@ -79,7 +75,6 @@ func (tc *termios) tcsetattr(optional_actions int) os.Error {
 	return errno
 }
 
-
 // === Wrappers around functions.
 // ===
 
@@ -109,7 +104,7 @@ func CheckIsatty(fd int) os.Error {
 
 // Gets the name of a terminal.
 //
-// char *ttyname(int fd)
+// char *ttyname(int fd);
 func TTYname(fd int) (string, os.Error) {
 	name, errno := C.ttyname(C.int(fd))
 	if errno != nil {
@@ -117,7 +112,6 @@ func TTYname(fd int) (string, os.Error) {
 	}
 	return C.GoString(name), nil
 }
-
 
 // === Utility
 // ===

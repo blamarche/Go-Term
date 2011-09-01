@@ -15,6 +15,7 @@ CGOFILES=\
 	control.go\
 
 GOFILES=\
+	def_$(GOOS).go\
 	util.go\
 	winsize.go\
 

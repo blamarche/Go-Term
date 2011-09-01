@@ -11,7 +11,6 @@ package term
 
 import "testing"
 
-
 func TestTTY(t *testing.T) {
 	if CheckIsatty(stdin) != nil {
 		t.Error("should be a terminal")

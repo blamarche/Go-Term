@@ -14,7 +14,6 @@ import (
 	"testing"
 )
 
-
 func TestWinsize(t *testing.T) {
 	ws, err := GetWinsize()
 	if err != nil {

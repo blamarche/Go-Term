@@ -11,7 +11,6 @@ package term
 
 import "testing"
 
-
 func TestTerminal(t *testing.T) {
 	if !HandleANSI() {
 		t.Error("this terminal should be supported")

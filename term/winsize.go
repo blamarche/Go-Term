@@ -40,10 +40,7 @@ import (
 	"strconv"
 	"syscall"
 	"unsafe"
-
-	"github.com/kless/godef-ioctl/ioctl"
 )
-
 
 // Values by default
 const (
@@ -52,19 +49,6 @@ const (
 )
 
 var WinsizeChan = make(chan int) // Allocate a channel for TrapWinsize()
-
-
-// === Type
-// ===
-
-// Definition from "h-termios_linux.go".
-type winsize struct {
-	Row    uint16
-	Col    uint16
-	Xpixel uint16
-	Ypixel uint16
-}
-
 
 // === Get
 // ===
@@ -75,7 +59,7 @@ func GetWinsize() (*winsize, os.Error) {
 
 	r1, _, errno := syscall.Syscall(syscall.SYS_IOCTL,
 		uintptr(syscall.Stdin),
-		uintptr(ioctl.TIOCGWINSZ),
+		uintptr(_TIOCGWINSZ),
 		uintptr(unsafe.Pointer(ws)),
 	)
 
