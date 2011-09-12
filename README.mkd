@@ -17,7 +17,8 @@ another Unix system with Go then contact me to add the defines for your system.
 It should be checked that the tests are passed to know if it works with both
 system and terminal:
 
-	cd $GOROOT/src/pkg/github.com/kless/Go-Term/term && gotest && cd -
+	cd $GOROOT/src/pkg/github.com/kless/Go-Term/term &&
+	gotest -v && make clean && cd -
 
 
 ## Operating instructions

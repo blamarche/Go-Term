@@ -1,6 +1,6 @@
 // goheader -w -p term -s linux /usr/include/asm-generic/ioctls.h
 // MACHINE GENERATED; DO NOT EDIT
-
+// ===
 
 package term
 
