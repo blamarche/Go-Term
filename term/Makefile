@@ -1,4 +1,4 @@
-# Copyright 2010  The "go-term" Authors
+# Copyright 2010  The "Go-Term" Authors
 #
 # Use of this source code is governed by the BSD-2 Clause license
 # that can be found in the LICENSE file.
@@ -9,7 +9,7 @@
 
 include $(GOROOT)/src/Make.inc
 
-TARG=github.com/kless/go-term/term
+TARG=github.com/kless/Go-Term/term
 
 CGOFILES=\
 	control.go\

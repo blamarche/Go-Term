@@ -3,18 +3,18 @@
 [Main]
 version: 0.5
 summary: Wrapper and utilities related to Unix terminal
-download-url: git://github.com/kless/go-term.git
+download-url: git://github.com/kless/Go-Term.git
 author: John Mac
 author-email: charles.beck@sent.com
 
 [Optional]
-home-page: http://github.com/kless/go-term
+home-page: http://github.com/kless/Go-Term
 keywords: terminal, Unix
 
 [CORE]
 metadata-version: 1.1
 project-type: cgo
-project-name: go-term
+project-name: Go-Term
 package-name: term
 license: bsd-2
 vcs: git

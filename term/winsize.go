@@ -1,4 +1,4 @@
-// Copyright 2010  The "go-term" Authors
+// Copyright 2010  The "Go-Term" Authors
 //
 // Use of this source code is governed by the BSD-2 Clause license
 // that can be found in the LICENSE file.
@@ -51,7 +51,6 @@ const (
 var WinsizeChan = make(chan int) // Allocate a channel for TrapWinsize()
 
 // === Get
-// ===
 
 // Gets the window size using the TIOCGWINSZ ioctl() call on the tty device.
 func GetWinsize() (*winsize, os.Error) {

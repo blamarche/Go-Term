@@ -1,4 +1,4 @@
-// Copyright 2010  The "go-term" Authors
+// Copyright 2010  The "Go-Term" Authors
 //
 // Use of this source code is governed by the BSD-2 Clause license
 // that can be found in the LICENSE file.
@@ -22,7 +22,7 @@ var origTermios *termios // In order to restore the original settings.
 var stdin = 0
 
 // === Init
-// ===
+
 
 func init() {
 	// === Store the actual terminal settings.
@@ -34,7 +34,6 @@ func init() {
 }
 
 // === Wrappers around types.
-// ===
 
 // Allows to manipulate the terminal.
 type termios struct {
@@ -76,7 +75,6 @@ func (tc *termios) tcsetattr(optional_actions int) os.Error {
 }
 
 // === Wrappers around functions.
-// ===
 
 // Determines if the device is a terminal.
 //
@@ -114,7 +112,6 @@ func TTYname(fd int) (string, os.Error) {
 }
 
 // === Utility
-// ===
 
 // Turns the echo mode.
 func Echo(echo bool) {
