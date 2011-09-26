@@ -107,8 +107,10 @@ func GetWinsizeInChar() (row, col int) {
 
 // Caughts a signal named SIGWINCH whenever the screen size changes.
 func TrapWinsize() {
+	var sig os.Signal
+
 	select {
-	case sig := <-signal.Incoming:
+	case sig = <-signal.Incoming:
 		if sig.(os.UnixSignal) == syscall.SIGWINCH {
 			ChanWinsize <- 1 // Send a signal
 		}
