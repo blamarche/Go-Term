@@ -48,7 +48,7 @@ const (
 	_COLUMN = 80
 )
 
-var WinsizeChan = make(chan int) // Allocate a channel for TrapWinsize()
+var ChanWinsize = make(chan int) // Allocate a channel for TrapWinsize()
 
 // === Get
 
@@ -107,13 +107,10 @@ func GetWinsizeInChar() (row, col int) {
 
 // Caughts a signal named SIGWINCH whenever the screen size changes.
 func TrapWinsize() {
-	for {
-		select {
-		case sig := <-signal.Incoming:
-			switch sig.(os.UnixSignal) {
-			case syscall.SIGWINCH:
-				WinsizeChan <- 1 // Send a signal
-			}
+	select {
+	case sig := <-signal.Incoming:
+		if sig.(os.UnixSignal) == syscall.SIGWINCH {
+			ChanWinsize <- 1 // Send a signal
 		}
 	}
 }
