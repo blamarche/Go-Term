@@ -109,10 +109,12 @@ func GetWinsizeInChar() (row, col int) {
 func TrapWinsize() {
 	var sig os.Signal
 
-	select {
-	case sig = <-signal.Incoming:
-		if sig.(os.UnixSignal) == syscall.SIGWINCH {
-			ChanWinsize <- 1 // Send a signal
+	go func() {
+		select {
+		case sig = <-signal.Incoming:
+			if sig.(os.UnixSignal) == syscall.SIGWINCH {
+				ChanWinsize <- 1 // Send a signal
+			}
 		}
-	}
+	}()
 }
