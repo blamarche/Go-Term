@@ -110,8 +110,7 @@ func TrapWinsize() {
 	var sig os.Signal
 
 	go func() {
-		select {
-		case sig = <-signal.Incoming:
+		for sig = range signal.Incoming {
 			if sig.(os.UnixSignal) == syscall.SIGWINCH {
 				ChanWinsize <- 1 // Send a signal
 			}
