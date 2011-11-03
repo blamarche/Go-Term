@@ -15,7 +15,7 @@ package term
 // #include <unistd.h>
 import "C"
 
-import "os"
+import "errors"
 
 var IsRawMode bool       // To check if restore is needed.
 var origTermios *termios // In order to restore the original settings.
@@ -29,7 +29,7 @@ func init() {
 	origTermios = newTermios(stdin)
 
 	if err := origTermios.tcgetattr(); err != nil {
-		panic("terminal settings could not be got: " + err.String())
+		panic("terminal settings could not be got: " + err.Error())
 	}
 }
 
@@ -53,7 +53,7 @@ func (tc *termios) copyto(to *termios) {
 // Gets terminal state.
 //
 // int tcgetattr(int fd, struct termios *termios_p);
-func (tc *termios) tcgetattr() os.Error {
+func (tc *termios) tcgetattr() error {
 	exitCode, errno := C.tcgetattr(C.int(tc.fd), tc.wrap)
 
 	if exitCode == 0 {
@@ -65,7 +65,7 @@ func (tc *termios) tcgetattr() os.Error {
 // Sets terminal state.
 //
 // int tcsetattr(int fd, int optional_actions, const struct termios *termios_p);
-func (tc *termios) tcsetattr(optional_actions int) os.Error {
+func (tc *termios) tcsetattr(optional_actions int) error {
 	exitCode, errno := C.tcsetattr(C.int(tc.fd), C.int(optional_actions), tc.wrap)
 
 	if exitCode == 0 {
@@ -91,19 +91,19 @@ func Isatty(fd int) bool {
 // Determines if the device is a terminal. Return an error, if any.
 //
 // int isatty(int fd);
-func CheckIsatty(fd int) os.Error {
+func CheckIsatty(fd int) error {
 	exitCode, errno := C.isatty(C.int(fd))
 
 	if exitCode == 1 {
 		return nil
 	}
-	return os.NewError("it is not a tty: " + errno.String())
+	return errors.New("it is not a tty: " + errno.Error())
 }
 
 // Gets the name of a terminal.
 //
 // char *ttyname(int fd);
-func TTYname(fd int) (string, os.Error) {
+func TTYname(fd int) (string, error) {
 	name, errno := C.ttyname(C.int(fd))
 	if errno != nil {
 		return "", errno
@@ -148,7 +148,7 @@ func KeyPress() {
 // Based in C call: void cfmakeraw(struct termios *termios_p)
 //
 // NOTE: in tty 'raw mode', CR+LF is used for output and CR is used for input.
-func MakeRaw() os.Error {
+func MakeRaw() error {
 	if IsRawMode {
 		return nil
 	}
@@ -190,7 +190,7 @@ func MakeRaw() os.Error {
 func RestoreTerm() {
 	if IsRawMode {
 		if err := origTermios.tcsetattr(C.TCSANOW); err != nil {
-			panic("restoring the terminal: " + err.String())
+			panic("restoring the terminal: " + err.Error())
 		}
 		IsRawMode = false
 	}

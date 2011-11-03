@@ -53,7 +53,7 @@ var ChanWinsize = make(chan int) // Allocate a channel for TrapWinsize()
 // === Get
 
 // Gets the window size using the TIOCGWINSZ ioctl() call on the tty device.
-func GetWinsize() (*winsize, os.Error) {
+func GetWinsize() (*winsize, error) {
 	ws := new(winsize)
 
 	r1, _, errno := syscall.Syscall(syscall.SYS_IOCTL,
