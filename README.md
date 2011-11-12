@@ -31,7 +31,7 @@ Nothing.
 ***Copyright 2010  The "Go-Term" Authors***  
 See file AUTHORS and CONTRIBUTORS.
 
-Licensed under **BSD-2 Clause license**.  
+Licensed under **BSD 2-Clause License**.  
 See file LICENSE.
 
 
