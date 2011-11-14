@@ -63,7 +63,7 @@ func GetWinsize() (*winsize, error) {
 	)
 
 	if int(r1) == -1 {
-		return nil, os.NewSyscallError("GetWinsize", int(errno))
+		return nil, os.NewSyscallError("GetWinsize", errno)
 	}
 	return ws, nil
 }

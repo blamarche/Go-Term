@@ -26,7 +26,7 @@ system and terminal:
 Nothing.
 
 
-## Licensing
+## Copyright and licensing
 
 ***Copyright 2010  The "Go-Term" Authors***  
 See file AUTHORS and CONTRIBUTORS.
