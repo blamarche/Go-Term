@@ -28,11 +28,9 @@ Nothing.
 
 ## Copyright and licensing
 
-***Copyright 2010  The "Go-Term" Authors***  
-See file AUTHORS and CONTRIBUTORS.
-
-Licensed under **BSD 2-Clause License**.  
-See file LICENSE.
+*Copyright 2010  The "Go-Term" Authors*. See file AUTHORS and CONTRIBUTORS.  
+Unless otherwise noted, the source files are distributed under the
+*BSD 2-Clause License* found in the LICENSE file.
 
 
 * * *
