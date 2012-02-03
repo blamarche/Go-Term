@@ -41,7 +41,7 @@ package term
 
 import (
 	"os"
-	"os/signal"
+	"exp/signal"
 	"strconv"
 	"syscall"
 	"unsafe"
