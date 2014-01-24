@@ -41,7 +41,7 @@ package term
 
 import (
 	"os"
-	"os/signal"
+	//"os/signal"
 	"strconv"
 	"syscall"
 	"unsafe"
@@ -112,13 +112,15 @@ func GetWinsizeInChar() (row, col int) {
 
 // Caughts a signal named SIGWINCH whenever the screen size changes.
 func TrapWinsize() {
-	var sig os.Signal
+	//var sig os.Signal
 
 	go func() {
+		/*
 		for sig = range signal.Incoming {
 			if sig.(os.UnixSignal) == syscall.SIGWINCH {
 				ChanWinsize <- 1 // Send a signal
 			}
 		}
+		*/
 	}()
 }

@@ -1,6 +1,6 @@
 include $(GOROOT)/src/Make.inc
 
-TARG=github.com/kless/Go-Term/term
+TARG=github.com/blamarche/Go-Term/term
 
 CGOFILES=\
 	control.go\
